@@ -74,7 +74,7 @@ class covid():
         return self.news_result
 
 
-@app.route('/news', methods=['POST'])
+@app.route('/covid_19', methods=['POST'])
 def covid_19():
     req = request.get_json()
 
