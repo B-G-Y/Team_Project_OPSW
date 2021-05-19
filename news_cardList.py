@@ -40,14 +40,14 @@ class issue():
         soup = BeautifulSoup(res.text, 'html.parser')
         lis = soup.find_all("a", class_=self.categoryTitleKey)
         img_tag = soup.find_all("a", class_=self.categoryImgUrlKey)
-        img_url = []    # img_url 저장 리스트
-        for src in img_tag:     # img_url 추가
+        img_url = []                # img_url 저장 리스트
+        for src in img_tag:         # img_url 추가
             src_img = src.find('img')
             img_url.append(src_img.get('src'))
 
-        title1 = lis[0].text                 # 기사 제목
-        link1 = lis[0].attrs.get('href')     # 기사 url
-        img_url1 = img_url[0]                # 해당 기사 img url
+        title1 = lis[0].text            # 기사 제목
+        link1 = lis[0].attrs.get('href')    # 기사 url
+        img_url1 = img_url[0]               # img url
         title2 = lis[4].text
         link2 = lis[4].attrs.get('href')
         img_url2 = img_url[1]
@@ -55,11 +55,13 @@ class issue():
         link3 = lis[8].attrs.get('href')
         img_url3 = img_url[2]
 
-        self.result = [
-            title1, link1, img_url1,
-            title2, link2, img_url2,
-            title3, link3, img_url3
+        self.result =[
+                title1, link1, img_url1,
+                title2, link2, img_url2,
+                title3, link3, img_url3
         ]
+
+
 
     def getIssue(self):
         return self.result
@@ -72,7 +74,7 @@ def news():
     input_text = req['userRequest']['utterance']  # 사용자가 전송한 실제 메시지
 
     if '정치' in input_text:  # 정치 항목 선택시
-        issueList = issue('정치').getIssue()  # title, url 받을 리스트
+        issueList = issue('정치').getIssue()    # title, url 받을 리스트
         res = {
             "contents": [
                 {
@@ -82,6 +84,15 @@ def news():
                             "listItems": [
                                 {
                                     "type": "title",
+                                    "title": "정치 헤드라인 뉴스 TOP3",
+                                    "linkUrl": {
+                                        "type": "OS",  # PC나 모바일별 별도 url설정 가능하나 web용으로 동일 적용
+                                        "webUrl": "https://news.naver.com/main/main.nhn?mode=LSD&mid=shm&sid1=100"  # 정보 링크 url
+                                    }
+
+                                },
+                                {
+                                    "type": "item",
                                     "imageUrl": issueList[2],
                                     "title": issueList[0],
                                     "linkUrl": {
@@ -113,7 +124,7 @@ def news():
                 }
             ]
         }
-    elif '경제' in input_text:  # 경제 항목 선택시
+    elif '경제' in input_text:    # 경제 항목 선택시
         issueList = issue('경제').getIssue()  # title, url 받을 리스트
         res = {
             "contents": [
@@ -124,6 +135,14 @@ def news():
                             "listItems": [
                                 {
                                     "type": "title",
+                                    "title": "경제 헤드라인 뉴스 TOP3",
+                                    "linkUrl": {
+                                        "type": "OS",  # PC나 모바일별 별도 url설정 가능하나 web용으로 동일 적용
+                                        "webUrl": "https://news.naver.com/main/main.nhn?mode=LSD&mid=shm&sid1=101"  # 정보 링크 url
+                                    }
+                                },
+                                {
+                                    "type": "item",
                                     "imageUrl": issueList[2],
                                     "title": issueList[0],
                                     "linkUrl": {
@@ -166,6 +185,14 @@ def news():
                             "listItems": [
                                 {
                                     "type": "title",
+                                    "title": "사회 헤드라인 뉴스 TOP3",
+                                    "linkUrl": {
+                                        "type": "OS",  # PC나 모바일별 별도 url설정 가능하나 web용으로 동일 적용
+                                        "webUrl": "https://news.naver.com/main/main.nhn?mode=LSD&mid=shm&sid1=102"  # 정보 링크 url
+                                    }
+                                },
+                                {
+                                    "type": "item",
                                     "imageUrl": issueList[2],
                                     "title": issueList[0],
                                     "linkUrl": {
