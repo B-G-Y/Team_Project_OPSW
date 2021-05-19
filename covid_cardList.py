@@ -8,7 +8,7 @@ app = Flask(__name__)
 class covid():
     session = requests.Session()  # covid-19 naver.com search result
     tend_url = "https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=1&ie=utf8&query=covid-19"
-    news_url = "http://ncov.mohw.go.kr/tcmBoardList.do?brdId=&brdGubun=&dataGubun=&ncvContSeq=&contSeq=&board_id=140&gubun="
+    news_url = "https://search.naver.com/search.naver?where=news&sm=tab_jum&query=%EC%BD%94%EB%A1%9C%EB%82%98"
 
     def __init__(self):  # 장르 입력값이 없다면 default category = 정치
         self.cate = None
@@ -59,7 +59,7 @@ class covid():
                 "누적 확진자 : " + cumulative + "(+" + add_cum + ")\n"
                 + "격리해제 : " + release + "(+" + add_rel + ")\n"
                 + "사망자 : " + died + "(+" + add_died + ")\n"
-                + "검사진행 : " + examination + "(+" + add_exm + ")\n"
+                + "검사진행 : " + examination + "(+" + add_exm + ")"
         )
         self.news_result = [
             news_title1, news_link1, news_img1,
@@ -81,6 +81,7 @@ def covid_19():
     input_text = req['userRequest']['utterance']  # 사용자가 전송한 실제 메시지 (text 출력)
 
     if '발생동향' in input_text:         # '발생동향' 항목 선택 시 (확진자, 격리해제수 등의 정보 text 출력)
+        tendList = covid().getCovid_tend()
         res = {
             "contents": [
                 {
@@ -94,11 +95,10 @@ def covid_19():
             "contents": [
                 {
                     "type": "text",
-                    "text": """
-                            1. 외출을 자제하고 보건소 또는 콜센터(1339)로 먼저 상담
-                            2. 콜센터 안내에 따라 반드시 마스크를 착용한 후 선별진료소가 있는 의료기관을 방문
-                            3. 방문 시 의료진에게 해외여행력을 알림
-                            """
+                    "text": "1. 외출을 자제하고 보건소 또는 콜센터(1339)로 먼저 상담"
+                            "2. 콜센터 안내에 따라 반드시 마스크를 착용한 후 선별진료소가 있는 의료기관을 방문"
+                            "3. 방문 시 의료진에게 해외여행력을 알림"
+
                 }
             ]
         }
