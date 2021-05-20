@@ -7,7 +7,6 @@ import urllib
 
 import json
 
-
 app = Flask(__name__)
 
 #######################
@@ -33,6 +32,31 @@ def exchange_rate():
         rate = soup.select_one('table.tbl_calculator > tbody > tr >td').get_text()
         nation = "미국 1USD 기준"
 
+        res = {
+            "contents": [
+                {
+                    "type": "card.image",
+                    "cards": [
+                        {
+                            "title": "환율 그래프",
+                            "imageUrl": "https://ssl.pstatic.net/imgfinance/chart/marketindex/area/month3/FX_USDKRW.png",
+                            "description": nation + " 환율: " + rate,
+                            "linkUrl": {},
+                            "buttons": [
+                                {
+                                    "type": "url",
+                                    "label": "더보기",
+                                    "data": {
+                                        "url": "https://finance.naver.com/marketindex/exchangeDetail.nhn?marketindexCd=FX_USDKRW"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+
     if '일본' in input_text:
         url = 'https://finance.naver.com/marketindex/exchangeDetail.nhn?marketindexCd=FX_JPYKRW'
         res = requests.get(url)
@@ -41,6 +65,31 @@ def exchange_rate():
 
         rate = soup.select_one('table.tbl_calculator > tbody > tr >td').get_text()
         nation = "일본 100엔 기준"
+
+        res = {
+            "contents": [
+                {
+                    "type": "card.image",
+                    "cards": [
+                        {
+                            "title": "환율 그래프",
+                            "imageUrl": "https://ssl.pstatic.net/imgfinance/chart/marketindex/area/month3/FX_JPYKRW.png",
+                            "description": nation + " 환율: " + rate,
+                            "linkUrl": {},
+                            "buttons": [
+                                {
+                                    "type": "url",
+                                    "label": "더보기",
+                                    "data": {
+                                        "url": "https://finance.naver.com/marketindex/exchangeDetail.nhn?marketindexCd=FX_JPYKRW"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
 
     if '중국' in input_text:
         url = 'https://finance.naver.com/marketindex/exchangeDetail.nhn?marketindexCd=FX_CNYKRW'
@@ -51,31 +100,30 @@ def exchange_rate():
         rate = soup.select_one('table.tbl_calculator > tbody > tr >td').get_text()
         nation = "중국 1위안 기준"
 
-    # 일반 텍스트형 응답용 메시지
-    res = {
-        "contents":[
-    {
-      "type":"card.image",
-      "cards":[
-        {
-          "title":"환율 그래프",
-          "imageUrl":"https://ssl.pstatic.net/imgfinance/chart/marketindex/area/month3/FX_USDKRW.png",
-          "description": nation + " 환율: " +rate,
-          "linkUrl": {},
-          "buttons":[
-            {
-              "type":"url",
-              "label":"더보기",
-              "data":{
-                  "url": "https://finance.naver.com/marketindex/exchangeDetail.nhn?marketindexCd=FX_USDKRW"
-              }
-            }
-          ]
+        res = {
+            "contents": [
+                {
+                    "type": "card.image",
+                    "cards": [
+                        {
+                            "title": "환율 그래프",
+                            "imageUrl": "https://ssl.pstatic.net/imgfinance/chart/marketindex/area/month3/FX_CNYKRW.png",
+                            "description": nation + " 환율: " + rate,
+                            "linkUrl": {},
+                            "buttons": [
+                                {
+                                    "type": "url",
+                                    "label": "더보기",
+                                    "data": {
+                                        "url": "https://finance.naver.com/marketindex/exchangeDetail.nhn?marketindexCd=FX_CNYKRW"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
         }
-      ]
-    }
-  ]
-}
 
     return jsonify(res)
 
