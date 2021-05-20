@@ -136,7 +136,7 @@ def music():
             ]
         }
 
-
+    if '주간' in input_text:
         RANK = 5  ## 멜론 차트 순위 1 ~ 5위까지
 
         header = {
