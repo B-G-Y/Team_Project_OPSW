@@ -20,7 +20,7 @@ def music():
 
     # HTML 가져오기
     if '24H' in input_text:
-        RANK = 5  ## 멜론 차트 순위 1 ~ 5위까지
+        RANK = 3  ## 멜론 차트 순위 1 ~ 3위까지
 
         header = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36'}
@@ -108,26 +108,6 @@ def music():
                                         "webUrl": "https://www.melon.com/song/detail.htm?songId=" + songInfo_Go[2]
                                         # 정보 링크 url
                                     }
-                                },
-                                {
-                                    "type": "item",
-                                    "imageUrl": imgSrcRank[3],
-                                    "title": "4등 " + ChartRankInfo[3],  # i=0부터 1등 정보 매겨짐
-                                    "linkUrl": {
-                                        "type": "OS",  # PC나 모바일별 별도 url설정 가능하나 web용으로 동일 적용
-                                        "webUrl": "https://www.melon.com/song/detail.htm?songId=" + songInfo_Go[3]
-                                        # 정보 링크 url
-                                    }
-                                },
-                                {
-                                    "type": "item",
-                                    "imageUrl": imgSrcRank[4],
-                                    "title": "5등 " + ChartRankInfo[4],  # i=0부터 1등 정보 매겨짐
-                                    "linkUrl": {
-                                        "type": "OS",  # PC나 모바일별 별도 url설정 가능하나 web용으로 동일 적용
-                                        "webUrl": "https://www.melon.com/song/detail.htm?songId=" + songInfo_Go[4]
-                                        # 정보 링크 url
-                                    }
                                 }
                             ]
                         }
@@ -137,7 +117,7 @@ def music():
         }
 
     if '일간' in input_text:
-        RANK = 5  ## 멜론 차트 순위 1 ~ 5위까지
+        RANK = 3  ## 멜론 차트 순위 1 ~ 3위까지
 
         header = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36'}
@@ -225,26 +205,6 @@ def music():
                                         "webUrl": "https://www.melon.com/song/detail.htm?songId=" + songInfo_Go[2]
                                         # 정보 링크 url
                                     }
-                                },
-                                {
-                                    "type": "item",
-                                    "imageUrl": imgSrcRank[3],
-                                    "title": "4등 " + ChartRankInfo[3],  # i=0부터 1등 정보 매겨짐
-                                    "linkUrl": {
-                                        "type": "OS",  # PC나 모바일별 별도 url설정 가능하나 web용으로 동일 적용
-                                        "webUrl": "https://www.melon.com/song/detail.htm?songId=" + songInfo_Go[3]
-                                        # 정보 링크 url
-                                    }
-                                },
-                                {
-                                    "type": "item",
-                                    "imageUrl": imgSrcRank[4],
-                                    "title": "5등 " + ChartRankInfo[4],  # i=0부터 1등 정보 매겨짐
-                                    "linkUrl": {
-                                        "type": "OS",  # PC나 모바일별 별도 url설정 가능하나 web용으로 동일 적용
-                                        "webUrl": "https://www.melon.com/song/detail.htm?songId=" + songInfo_Go[4]
-                                        # 정보 링크 url
-                                    }
                                 }
                             ]
                         }
@@ -254,7 +214,7 @@ def music():
         }
 
     if '주간' in input_text:
-        RANK = 5  ## 멜론 차트 순위 1 ~ 5위까지
+        RANK = 3  ## 멜론 차트 순위 1 ~ 3위까지
 
         header = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36'}
@@ -340,26 +300,6 @@ def music():
                                     "linkUrl": {
                                         "type": "OS",  # PC나 모바일별 별도 url설정 가능하나 web용으로 동일 적용
                                         "webUrl": "https://www.melon.com/song/detail.htm?songId=" + songInfo_Go[2]
-                                        # 정보 링크 url
-                                    }
-                                },
-                                {
-                                    "type": "item",
-                                    "imageUrl": imgSrcRank[3],
-                                    "title": "4등 " + ChartRankInfo[3],  # i=0부터 1등 정보 매겨짐
-                                    "linkUrl": {
-                                        "type": "OS",  # PC나 모바일별 별도 url설정 가능하나 web용으로 동일 적용
-                                        "webUrl": "https://www.melon.com/song/detail.htm?songId=" + songInfo_Go[3]
-                                        # 정보 링크 url
-                                    }
-                                },
-                                {
-                                    "type": "item",
-                                    "imageUrl": imgSrcRank[4],
-                                    "title": "5등 " + ChartRankInfo[4],  # i=0부터 1등 정보 매겨짐
-                                    "linkUrl": {
-                                        "type": "OS",  # PC나 모바일별 별도 url설정 가능하나 web용으로 동일 적용
-                                        "webUrl": "https://www.melon.com/song/detail.htm?songId=" + songInfo_Go[4]
                                         # 정보 링크 url
                                     }
                                 }
