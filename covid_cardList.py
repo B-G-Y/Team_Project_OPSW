@@ -80,12 +80,12 @@ def covid_19():
 
     input_text = req['userRequest']['utterance']  # 사용자가 전송한 실제 메시지 (text 출력)
 
-    if '발생동향' in input_text:         # '발생동향' 항목 선택 시 (확진자, 격리해제수 등의 정보 text 출력)
-        tendList = covid().getCovid_tend()
-        tendText = ("누적 확진자 : " + tendList[0] + "(+" + tendList[1] + ")\n"
-                    + "격리해제 : " + tendList[2] + "(+" + tendList[3] + ")\n"
-                    + "사망자 : " + tendList[4] + "(+" + tendList[5] + ")\n"
-                    + "검사진행 : " + tendList[6] + "(+" + tendList[7] + ")")
+    if '발생동향' in input_text:  # '발생동향' 항목 선택 시 (확진자, 격리해제수 등의 정보 text 출력)
+        tendList = covid().getCovid_tend()   # 발생 동향 List = (누적 확진자, 추가 확진자, 격리해제, 추가 격리해제, 사망자, 추가 사망자, 검사 진행, 추가 검사)
+        tendText = ("누적 확진자 : " + tendList[0] + " (+" + tendList[1] + ")\n"      # tendList를 정보 문자열과 함께 저장
+                    + "격리해제 : " + tendList[2] + " (+" + tendList[3] + ")\n"
+                    + "사망자 : " + tendList[4] + " (+" + tendList[5] + ")\n"
+                    + "검사진행 : " + tendList[6] + " (+" + tendList[7] + ")")
         res = {
             "contents": [
                 {
@@ -94,8 +94,8 @@ def covid_19():
                 }
             ]
         }
-    elif '의심증상 발생 시' in input_text:    # '의심증상 발생 시' 항목 선택 시 (text 출력)
-        res = {                            # 행동수칙 text 출력
+    elif '의심증상 발생 시' in input_text:  # '의심증상 발생 시' 항목 선택 시 (text 출력)
+        res = {  # 행동수칙 text 출력
             "contents": [
                 {
                     "type": "text",
@@ -104,8 +104,8 @@ def covid_19():
                 }
             ]
         }
-    elif '관련 보도자료' in input_text:           # '관련 보도자료' 항목 선택시 (관련기사 3개 card.list 출력)
-        newsList = covid().getCovid_news()      # title, url, img 받을 리스트
+    elif '관련 보도자료' in input_text:  # '관련 보도자료' 항목 선택시 (관련기사 3개 card.list 출력)
+        newsList = covid().getCovid_news()  # title, url, img 받을 리스트
         res = {
             "contents": [
                 {
@@ -118,7 +118,8 @@ def covid_19():
                                     "title": "COVID-19 NEWS TOP 3",
                                     "linkUrl": {
                                         "type": "OS",  # PC나 모바일별 별도 url설정 가능하나 web용으로 동일 적용
-                                        "webUrl": "http://ncov.mohw.go.kr/tcmBoardList.do?brdId=&brdGubun=&dataGubun=&ncvContSeq=&contSeq=&board_id=140&gubun="  # 정보 링크 url
+                                        "webUrl": "http://ncov.mohw.go.kr/tcmBoardList.do?brdId=&brdGubun=&dataGubun=&ncvContSeq=&contSeq=&board_id=140&gubun="
+                                        # 정보 링크 url
                                     }
                                 },
                                 {
