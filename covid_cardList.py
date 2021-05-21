@@ -24,26 +24,26 @@ class covid():
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36"}
         tend_res = requests.get(self.tend_url, headers=headers)
         tend_soup = BeautifulSoup(tend_res.text, 'html.parser')
-        tend_cum_lis = tend_soup.find_all("p", class_="info_num")         # 누적 확진자, 격리해제, 사망자, 검사진행
-        tend_add_lis = tend_soup.find_all("em", class_="info_variation")  # 추가 (누적 확진자, 격리해제, 사망자, 검사진행)
+        tend_cum_lis = tend_soup.find_all("p", class_="info_num", limit=5)  # 누적 확진자, 격리해제, 사망자, 검사진행
+        tend_add_lis = tend_soup.find_all("em", class_="info_variation", limit=5)  # 추가 (누적 확진자, 격리해제, 사망자, 검사진행)
 
         news_res = requests.get(self.news_url, headers=headers)
         news_soup = BeautifulSoup(news_res.text, 'html.parser')
         news_lis = news_soup.find_all("a", class_="news_tit")
         img_tag = news_soup.find_all("a", class_="dsc_thumb")
-        img_url = []         # img_url 저장 리스트
+        img_url = []  # img_url 저장 리스트
         for src in img_tag:  # img_url 추가
             src_img = src.find('img')
             img_url.append(src_img.get('src'))
 
-        cumulative = tend_cum_lis[0].text      # 누적 확진자
-        add_cum = tend_add_lis[0].text         # (오늘자)추가 확진자
-        release = tend_cum_lis[1].text         # 누적 격리해제
-        add_rel = tend_add_lis[1].text         # 추가 격리해제
-        died = tend_cum_lis[2].text            # 누적 사망자
-        add_died = tend_add_lis[2].text        # 추가 사망자
-        examination = tend_cum_lis[3].text     # 누적 검사진행
-        add_exm = tend_add_lis[3].text         # 추가 검사진행
+        cumulative = tend_cum_lis[0].text  # 누적 확진자
+        add_cum = tend_add_lis[0].text  # (오늘자)추가 확진자
+        release = tend_cum_lis[1].text  # 누적 격리해제
+        add_rel = tend_add_lis[1].text  # 추가 격리해제
+        died = tend_cum_lis[2].text  # 누적 사망자
+        add_died = tend_add_lis[2].text  # 추가 사망자
+        examination = tend_cum_lis[3].text  # 누적 검사진행
+        add_exm = tend_add_lis[3].text  # 추가 검사진행
 
         news_title1 = news_lis[0].text
         news_link1 = news_lis[0].attrs.get('href')
@@ -55,12 +55,12 @@ class covid():
         news_link3 = news_lis[2].attrs.get('href')
         news_img3 = img_url[2]
 
-        self.tend_result = (
-                "누적 확진자 : " + cumulative + "(+" + add_cum + ")\n"
-                + "격리해제 : " + release + "(+" + add_rel + ")\n"
-                + "사망자 : " + died + "(+" + add_died + ")\n"
-                + "검사진행 : " + examination + "(+" + add_exm + ")"
-        )
+        self.tend_result = [
+            cumulative, add_cum,
+            release, add_rel,
+            died, add_died,
+            examination, add_exm
+        ]
         self.news_result = [
             news_title1, news_link1, news_img1,
             news_title2, news_link2, news_img2,
@@ -81,11 +81,16 @@ def covid_19():
     input_text = req['userRequest']['utterance']  # 사용자가 전송한 실제 메시지 (text 출력)
 
     if '발생동향' in input_text:         # '발생동향' 항목 선택 시 (확진자, 격리해제수 등의 정보 text 출력)
+        tendList = covid().getCovid_tend()
+        tendText = ("누적 확진자 : " + tendList[0] + "(+" + tendList[1] + ")\n"
+                    + "격리해제 : " + tendList[2] + "(+" + tendList[3] + ")\n"
+                    + "사망자 : " + tendList[4] + "(+" + tendList[5] + ")\n"
+                    + "검사진행 : " + tendList[6] + "(+" + tendList[7] + ")")
         res = {
             "contents": [
                 {
                     "type": "text",
-                    "text": covid().getCovid_tend()
+                    "text": tendText
                 }
             ]
         }
