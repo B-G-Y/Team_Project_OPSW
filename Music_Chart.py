@@ -29,10 +29,10 @@ def music():
         html = req.text
         parse = BeautifulSoup(html, 'html.parser')
 
-        titles = parse.find_all("div", {"class": "ellipsis rank01"})
-        singers = parse.find_all("div", {"class": "ellipsis rank02"})
-        img_urls = parse.select('tbody > tr')
-        songInfo_urls = parse.select('tbody > tr')
+        titles = parse.find_all("div", {"class": "ellipsis rank01"}, limit=3)
+        singers = parse.find_all("div", {"class": "ellipsis rank02"}, limit=3)
+        img_urls = parse.select('tbody > tr', limit=3)
+        songInfo_urls = parse.select('tbody > tr', limit=3)
 
         title = []
         singer = []
@@ -126,12 +126,12 @@ def music():
         html = req.text
         parse = BeautifulSoup(html, 'html.parser')
 
-        titles = parse.find_all("div", {"class": "ellipsis rank01"})
-        singers = parse.find_all("div", {"class": "ellipsis rank02"})
-        img_urls = parse.select('tr#lst50')
-        songInfo_urls = parse.select('tr#lst50')
+        titles = parse.find_all("div", {"class": "ellipsis rank01"}, limit=3)
+        singers = parse.find_all("div", {"class": "ellipsis rank02"}, limit=3)
+        img_urls = parse.select('tr#lst50', limit=3)
+        songInfo_urls = parse.select('tr#lst50', limit=3)
 
-        title = []
+    title = []
         singer = []
 
         img_url = []
@@ -223,10 +223,10 @@ def music():
         html = req.text
         parse = BeautifulSoup(html, 'html.parser')
 
-        titles = parse.find_all("div", {"class": "ellipsis rank01"})
-        singers = parse.find_all("div", {"class": "ellipsis rank02"})
-        img_urls = parse.select('tr#lst50')
-        songInfo_urls = parse.select('tr#lst50')
+        titles = parse.find_all("div", {"class": "ellipsis rank01"}, limit=3)
+        singers = parse.find_all("div", {"class": "ellipsis rank02"}, limit=3)
+        img_urls = parse.select('tr#lst50', limit=3)
+        songInfo_urls = parse.select('tr#lst50', limit=3)
 
         title = []
         singer = []
