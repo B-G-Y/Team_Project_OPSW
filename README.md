@@ -56,7 +56,7 @@
 
 
 
-### 📜LICENS
+### 📜LICENSE
 - This software is licensed under the [MIT](https://github.com/B-G-Y/Team_Project_OPSW/blob/master/LICENSE)
 - 코로나 관련 정보 (발생 동향 및 행동 수칙)에 대한 저작물은 [공공누리의 제1유형](https://www.kogl.or.kr/info/license.do#01-tab)에 따라 이용할 수 있습니다.
 텍스트 데이터는 공공누리 유형조건에 따라 자유이용이 가능합니다.![](https://github.com/B-G-Y/Team_Project_OPSW/blob/master/docs/kogl_license.png)
