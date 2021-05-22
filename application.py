@@ -1,6 +1,6 @@
-# flask¿ë ¸ğµâ
+# flaskìš© ëª¨ë“ˆ
 from flask import Flask, request, jsonify
-# crawling¿ë ¸ğµâ
+# crawlingìš© ëª¨ë“ˆ
 from urllib.request import urlopen, Request
 from bs4 import BeautifulSoup
 from selenium import webdriver
@@ -9,113 +9,237 @@ import requests
 import urllib
 import json
 
+from flask import Flask, request, jsonify
+from bs4 import BeautifulSoup
+import requests
+
 app = Flask(__name__)
 
-######################################################################
-#´º½º ½ÃÀÛ
-######################################################################
+
 class issue():
     session = requests.Session()
-    url = "https://news.naver.com/main/main.nhn?mode=LSD&mid=shm&sid1="       # naver news url
-    map_categoryNum = {                                                       # ´º½º Àå¸£º° ¸ÅÇÎ
-        'Á¤Ä¡': "100", '°æÁ¦': "101", '»çÈ¸': "102", '»ıÈ°/¹®È­': "103", '»ıÈ°': "103", '¹®È­': "103", '¼¼°è': "104",
-        'IT/°úÇĞ': "105", 'IT': "105", '°úÇĞ': "105"
+    url = "https://news.naver.com/main/main.nhn?mode=LSD&mid=shm&sid1="  # naver news url
+    map_categoryNum = {  # ë‰´ìŠ¤ ì¥ë¥´ë³„ ë§¤í•‘
+        'ì •ì¹˜': "100", 'ê²½ì œ': "101", 'ì‚¬íšŒ': "102"
     }
-    map_categoryKey = {                                                       # Àå¸£º° ÆäÀÌÁö ¼Ò½º Å¬·¡½º »óÀÌ°ª ¸ÅÇÎ
-        'Á¤Ä¡': "cluster_text_headline nclicks(cls_pol.clsart)", '°æÁ¦': "cluster_text_headline nclicks(cls_eco.clsart)",
-        '»çÈ¸': "cluster_text_headline nclicks(cls_nav.clsart)", '»ıÈ°/¹®È­': "cluster_text_headline nclicks(cls_lif.clsart)",
-        '»ıÈ°': "cluster_text_headline nclicks(cls_lif.clsart)", '¹®È­': "cluster_text_headline nclicks(cls_lif.clsart)",
-        '¼¼°è': "cluster_text_headline nclicks(cls_wor.clsart)", 'IT/°úÇĞ': "cluster_text_headline nclicks(cls_sci.clsart)",
-        'IT': "cluster_text_headline nclicks(cls_sci.clsart)", '°úÇĞ': "cluster_text_headline nclicks(cls_sci.clsart)"
+    map_cateTitleKey = {  # ì¥ë¥´ë³„ í˜ì´ì§€ ì†ŒìŠ¤ íƒ€ì´í‹€(url) í´ë˜ìŠ¤ ìƒì´ê°’ ë§¤í•‘
+        'ì •ì¹˜': "cluster_text_headline nclicks(cls_pol.clsart)", 'ê²½ì œ': "cluster_text_headline nclicks(cls_eco.clsart)",
+        'ì‚¬íšŒ': "cluster_text_headline nclicks(cls_nav.clsart)"
+    }
+    map_cateImgUrlKey = {  # ì¥ë¥´ë³„ í˜ì´ì§€ ì†ŒìŠ¤ image í´ë˜ìŠ¤ ìƒì´ê°’ ë§¤í•‘
+        'ì •ì¹˜': "cluster_thumb_link nclicks(cls_pol.clsart)", 'ê²½ì œ': "cluster_thumb_link nclicks(cls_eco.clsart)",
+        'ì‚¬íšŒ': "cluster_thumb_link nclicks(cls_nav.clsart)"
     }
 
-    def __init__(self, cate='Á¤Ä¡'):           # Àå¸£ ÀÔ·Â°ªÀÌ ¾ø´Ù¸é default category = Á¤Ä¡
+    def __init__(self, cate='ì •ì¹˜'):  # ì¥ë¥´ ì…ë ¥ê°’ì´ ì—†ë‹¤ë©´ default category = ì •ì¹˜
         self.cate = cate
         self.url = None
         self.categoryKey = None
         self.result = None
 
         categoryNum = issue.map_categoryNum[cate]
-        if not categoryNum:                 # ¸ÅÇÎ ½ÇÆĞ ½Ã
-            print("Àß¸øµÈ Àå¸£ ¼±ÅÃ")
-            return
         self.url = issue.url + categoryNum
-        self.categoryKey = issue.map_categoryKey[cate]
+        self.categoryTitleKey = issue.map_cateTitleKey[cate]
+        self.categoryImgUrlKey = issue.map_cateImgUrlKey[cate]
 
         self.search()
 
     def search(self):
-        headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36"}
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36"}
         res = requests.get(self.url, headers=headers)
         soup = BeautifulSoup(res.text, 'html.parser')
-        lis = soup.find_all("a", class_=self.categoryKey, limit=13)
+        lis = soup.find_all("a", class_=self.categoryTitleKey)
+        img_tag = soup.find_all("a", class_=self.categoryImgUrlKey)
+        img_url = []                # img_url ì €ì¥ ë¦¬ìŠ¤íŠ¸
+        for src in img_tag:         # img_url ì¶”ê°€
+            src_img = src.find('img')
+            img_url.append(src_img.get('src'))
 
-        title1 = lis[0].text
-        link1 = lis[0].attrs.get('href')
+        title1 = lis[0].text            # ê¸°ì‚¬ ì œëª©
+        link1 = lis[0].attrs.get('href')    # ê¸°ì‚¬ url
+        img_url1 = img_url[0]               # img url
         title2 = lis[4].text
         link2 = lis[4].attrs.get('href')
+        img_url2 = img_url[1]
         title3 = lis[8].text
         link3 = lis[8].attrs.get('href')
+        img_url3 = img_url[2]
 
-        self.result = (
-            title1 + " (" + link1 + ")\n" +
-            title2 + " (" + link2 + ")\n" +
-            title3 + " (" + link3 + ")"
-        )
+        self.result =[
+                title1, link1, img_url1,
+                title2, link2, img_url2,
+                title3, link3, img_url3
+        ]
+
+
 
     def getIssue(self):
         return self.result
 
-######################################################################  
-#´º½º ³¡
 
-#ÄÚ·Î³ª ½ÃÀÛ 
-######################################################################
-
-
-
-
-
-@app.route('/news', methods=['POST'])  # ´º½º Á¤º¸ ºí·°¿¡ ½ºÅ³·Î ¿¬°áµÈ °æ·Î
+@app.route('/news', methods=['POST'])
 def news():
     req = request.get_json()
-    
-    input_text = req['userRequest']['utterance'] # »ç¿ëÀÚ°¡ Àü¼ÛÇÑ ½ÇÁ¦ ¸Ş½ÃÁö
-    
-    if '°æÁ¦' in input_text: # Àü¼Û ¸Ş½ÃÁö¿¡ "°æÁ¦"ÀÌ ÀÖÀ» °æ¿ì´Â °æÁ¦ ´º½º Á¤º¸¸¦ ÀÀ´ä
+
+    input_text = req['userRequest']['utterance']  # ì‚¬ìš©ìê°€ ì „ì†¡í•œ ì‹¤ì œ ë©”ì‹œì§€
+
+    if 'ì •ì¹˜' in input_text:  # ì •ì¹˜ í•­ëª© ì„ íƒì‹œ
+        issueList = issue('ì •ì¹˜').getIssue()    # title, url ë°›ì„ ë¦¬ìŠ¤íŠ¸
         res = {
-        "contents": [
-            {
-                "type": "text",
-                "text": issue('°æÁ¦').getIssue()
-            }
-        ]
-    }
-    elif '°úÇĞ'in input_text: # Àü¼Û ¸Ş½ÃÁö¿¡ "°úÇĞ"ÀÌ ÀÖÀ» °æ¿ì´Â °úÇĞ ´º½º Á¤º¸¸¦ ÀÀ´ä
+            "contents": [
+                {
+                    "type": "card.list",
+                    "cards": [
+                        {
+                            "listItems": [
+                                {
+                                    "type": "title",
+                                    "title": "ì •ì¹˜ í—¤ë“œë¼ì¸ ë‰´ìŠ¤ TOP3",
+                                    "linkUrl": {
+                                        "type": "OS",  # PCë‚˜ ëª¨ë°”ì¼ë³„ ë³„ë„ urlì„¤ì • ê°€ëŠ¥í•˜ë‚˜ webìš©ìœ¼ë¡œ ë™ì¼ ì ìš©
+                                        "webUrl": "https://news.naver.com/main/main.nhn?mode=LSD&mid=shm&sid1=100"  # ì •ë³´ ë§í¬ url
+                                    }
+
+                                },
+                                {
+                                    "type": "item",
+                                    "imageUrl": issueList[2],
+                                    "title": issueList[0],
+                                    "linkUrl": {
+                                        "type": "OS",  # PCë‚˜ ëª¨ë°”ì¼ë³„ ë³„ë„ urlì„¤ì • ê°€ëŠ¥í•˜ë‚˜ webìš©ìœ¼ë¡œ ë™ì¼ ì ìš©
+                                        "webUrl": issueList[1]  # ì •ë³´ ë§í¬ url
+                                    }
+                                },
+                                {
+                                    "type": "item",
+                                    "imageUrl": issueList[5],
+                                    "title": issueList[3],
+                                    "linkUrl": {
+                                        "type": "OS",
+                                        "webUrl": issueList[4]
+                                    }
+                                },
+                                {
+                                    "type": "item",
+                                    "imageUrl": issueList[8],
+                                    "title": issueList[6],
+                                    "linkUrl": {
+                                        "type": "OS",
+                                        "webUrl": issueList[7]
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    elif 'ê²½ì œ' in input_text:    # ê²½ì œ í•­ëª© ì„ íƒì‹œ
+        issueList = issue('ê²½ì œ').getIssue()  # title, url ë°›ì„ ë¦¬ìŠ¤íŠ¸
         res = {
-        "contents": [
-            {
-                "type": "text",
-                "text": issue('°úÇĞ').getIssue()
-            }
-        ]
-    }
-    elif '»ıÈ°' in input_text: # Àü¼Û ¸Ş½ÃÁö¿¡ "»ıÈ°"ÀÌ ÀÖÀ» °æ¿ì´Â »ıÈ° ´º½º Á¤º¸¸¦ ÀÀ´ä
+            "contents": [
+                {
+                    "type": "card.list",
+                    "cards": [
+                        {
+                            "listItems": [
+                                {
+                                    "type": "title",
+                                    "title": "ê²½ì œ í—¤ë“œë¼ì¸ ë‰´ìŠ¤ TOP3",
+                                    "linkUrl": {
+                                        "type": "OS",  # PCë‚˜ ëª¨ë°”ì¼ë³„ ë³„ë„ urlì„¤ì • ê°€ëŠ¥í•˜ë‚˜ webìš©ìœ¼ë¡œ ë™ì¼ ì ìš©
+                                        "webUrl": "https://news.naver.com/main/main.nhn?mode=LSD&mid=shm&sid1=101"  # ì •ë³´ ë§í¬ url
+                                    }
+                                },
+                                {
+                                    "type": "item",
+                                    "imageUrl": issueList[2],
+                                    "title": issueList[0],
+                                    "linkUrl": {
+                                        "type": "OS",  # PCë‚˜ ëª¨ë°”ì¼ë³„ ë³„ë„ urlì„¤ì • ê°€ëŠ¥í•˜ë‚˜ webìš©ìœ¼ë¡œ ë™ì¼ ì ìš©
+                                        "webUrl": issueList[1]  # ì •ë³´ ë§í¬ url
+                                    }
+                                },
+                                {
+                                    "type": "item",
+                                    "imageUrl": issueList[5],
+                                    "title": issueList[3],
+                                    "linkUrl": {
+                                        "type": "OS",
+                                        "webUrl": issueList[4]
+                                    }
+                                },
+                                {
+                                    "type": "item",
+                                    "imageUrl": issueList[8],
+                                    "title": issueList[6],
+                                    "linkUrl": {
+                                        "type": "OS",
+                                        "webUrl": issueList[7]
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    elif 'ì‚¬íšŒ' in input_text:  # ì‚¬íšŒ í•­ëª© ì„ íƒì‹œ
+        issueList = issue('ì‚¬íšŒ').getIssue()  # title, url ë°›ì„ ë¦¬ìŠ¤íŠ¸
         res = {
-        "contents": [
-            {
-                "type": "text",
-                "text": issue('»ıÈ°').getIssue()
-            }
-        ]
-    }
-    
-    # Àü¼Û
+            "contents": [
+                {
+                    "type": "card.list",
+                    "cards": [
+                        {
+                            "listItems": [
+                                {
+                                    "type": "title",
+                                    "title": "ì‚¬íšŒ í—¤ë“œë¼ì¸ ë‰´ìŠ¤ TOP3",
+                                    "linkUrl": {
+                                        "type": "OS",  # PCë‚˜ ëª¨ë°”ì¼ë³„ ë³„ë„ urlì„¤ì • ê°€ëŠ¥í•˜ë‚˜ webìš©ìœ¼ë¡œ ë™ì¼ ì ìš©
+                                        "webUrl": "https://news.naver.com/main/main.nhn?mode=LSD&mid=shm&sid1=102"  # ì •ë³´ ë§í¬ url
+                                    }
+                                },
+                                {
+                                    "type": "item",
+                                    "imageUrl": issueList[2],
+                                    "title": issueList[0],
+                                    "linkUrl": {
+                                        "type": "OS",  # PCë‚˜ ëª¨ë°”ì¼ë³„ ë³„ë„ urlì„¤ì • ê°€ëŠ¥í•˜ë‚˜ webìš©ìœ¼ë¡œ ë™ì¼ ì ìš©
+                                        "webUrl": issueList[1]  # ì •ë³´ ë§í¬ url
+                                    }
+                                },
+                                {
+                                    "type": "item",
+                                    "imageUrl": issueList[5],
+                                    "title": issueList[3],
+                                    "linkUrl": {
+                                        "type": "OS",
+                                        "webUrl": issueList[4]
+                                    }
+                                },
+                                {
+                                    "type": "item",
+                                    "imageUrl": issueList[8],
+                                    "title": issueList[6],
+                                    "linkUrl": {
+                                        "type": "OS",
+                                        "webUrl": issueList[7]
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+
+    # ì „ì†¡
     return jsonify(res)
 
 
-
-# ¸ŞÀÎ ÇÔ¼ö
+# ë©”ì¸ í•¨ìˆ˜
 if __name__ == '__main__':
-
-    app.run(host='0.0.0.0', port=5000, debug = True, threaded=True)
+    app.run(host='0.0.0.0', port=5000, debug=True, threaded=True)
