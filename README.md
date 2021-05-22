@@ -6,7 +6,7 @@
 #### [Kakao i Open Builder](https://i.kakao.com/)와 파이썬으로 만든 채팅 봇입니다.
 ##### 헤드라인 뉴스 및 음악 차트 제공 등의 일상생활에 작은 도움이 되고자 합니다.
 
-## 💁🏻‍♂️팀프로젝트 인원
+## ⍩⃝팀프로젝트 인원
 * [김도영](https://github.com/DaeguKIng)
 * [김석현](https://github.com/karist123)
 * [배경윤](https://github.com/B-G-Y)
