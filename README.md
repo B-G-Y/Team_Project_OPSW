@@ -4,6 +4,7 @@
 [![GitHub license](https://img.shields.io/github/license/B-G-Y/Team_Project_OPSW?logo=mit)](https://github.com/B-G-Y/Team_Project_OPSW/blob/master/LICENSE)
 #### [대구대학교 팀프로젝트🏫](https://daegu.ac.kr/)
 #### [Kakao i Open Builder](https://i.kakao.com/)와 파이썬으로 만든 채팅 봇입니다.
+##### 헤드라인 뉴스 및 음악 차트 제공 등의 일상생활에 작은 도움이 되고자 합니다.
 
 ## 💁🏻‍♂️팀프로젝트 인원
 * [김도영](https://github.com/DaeguKIng)
@@ -57,7 +58,7 @@
 
 ### 📜LICENS
 - This software is licensed under the [MIT](https://github.com/B-G-Y/Team_Project_OPSW/blob/master/LICENSE)
-- 코로나 관련 정보 (발생 동향 및 행동 수칙)에 대한 저작물은 공공누리의 제1유형 (출처표시, 상업적 이용가능, 변경 가능) 에 따라 이용할 수 있습니다.
+- 코로나 관련 정보 (발생 동향 및 행동 수칙)에 대한 저작물은 [공공누리의 제1유형](https://www.kogl.or.kr/info/license.do#01-tab)에 따라 이용할 수 있습니다.
 텍스트 데이터는 공공누리 유형조건에 따라 자유이용이 가능합니다.![](https://github.com/B-G-Y/Team_Project_OPSW/blob/master/docs/kogl_license.png)
 
 
